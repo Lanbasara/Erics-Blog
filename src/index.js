@@ -1,2 +1,2 @@
-const title = require('./title');
-console.log(title);
+const title = import(/* webpackChunkName: "title" */'./common-title')
+console.log(title)

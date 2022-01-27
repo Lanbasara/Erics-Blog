@@ -4,7 +4,7 @@ module.exports = {
     entry : path.resolve(__dirname,'./src/index.js'),
     output : {
         path : path.resolve(__dirname,'./output'),
-        filename : 'index.js'
+        filename : '[name].js'
     },
     target : "web"
 }
