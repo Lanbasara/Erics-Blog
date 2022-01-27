@@ -1,0 +1,19 @@
+{
+  "name": "Erics-Blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Lanbasara/Erics-Blog",
+  "author": "Lanbasara <ghkagg@outlook.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "koa": "^2.13.4",
+    "nodemon": "^2.0.15",
+    "webpack": "^5.67.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.9.2"
+  }
+}
