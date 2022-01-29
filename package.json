@@ -6,11 +6,13 @@
   "author": "Lanbasara <ghkagg@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "rimraf ./output/index.js ./output/another.js &&webpack --config webpack.config.js",
+    "start:server" : "npx nodemon ./server/index.js"
   },
   "dependencies": {
     "koa": "^2.13.4",
     "nodemon": "^2.0.15",
+    "rimraf": "^3.0.2",
     "webpack": "^5.67.0"
   },
   "devDependencies": {
