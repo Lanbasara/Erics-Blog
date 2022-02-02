@@ -1,0 +1,13 @@
+{
+  "name": "Didact",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.13.4",
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "start:Didact": "npx nodemon ./server.js"
+  }
+}
