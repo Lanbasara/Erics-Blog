@@ -194,9 +194,47 @@ function performUnitOfWork(fiber) {
     }
 }
 
+let wipFiber = null
+let hookIndex = null
+
 function updateFunctionComponent(fiber){
+    wipFiber = fiber
+    hookIndex = 0
+    wipFiber.hooks = []
     const children = [fiber.type(fiber.props)]
     reconcileChildren(fiber, children)
+}
+
+function useState(initial){
+    const oldHook = 
+        wipFiber.alternate &&
+        wipFiber.alternate.hooks &&
+        wipFiber.alternate.hooks[hookIndex]
+    
+    const hook = {
+        state : oldHook ? oldHook.state : initial,
+        queue : []
+    }
+
+    const actions = oldHook ? oldHook.queue : []
+    actions.forEach(action => {
+        hook.state = action(hook.state)
+    })
+
+    const setState = action => {
+        hook.queue.push(action)
+        wipRoot = {
+            dom : currentRoot.dom,
+            props : currentRoot.props,
+            alternate : currentRoot
+        }
+        nextUnitOfWork = wipRoot
+        deletions = []
+    }
+
+    wipFiber.hooks.push(hook)
+    hookIndex++
+    return [hook.state, setState]
 }
 
 function updateHostComponent(fiber){
@@ -266,6 +304,7 @@ function reconcileChildren(wipFiber, elements) {
 const Didact = {
     createElement,
     render,
+    useState,
 }
 
 /** @jsx Didact.createElement */
@@ -273,6 +312,21 @@ const container = document.getElementById("root")
 
 function App(props) {
     return <h1>Hi {props.name}</h1>
+}
+
+function Counter(){
+    const [count,setCount] = useState(1)
+    const [count2,setCount2] = useState(1)
+    return (
+        <div>
+        <h1 onClick={() => setCount(c => c+1)}>
+            Counter : {count}
+        </h1>
+        <h1 onClick={() => setCount2(c => c-1)}>
+            Counter : {count2}
+        </h1>
+        </div>
+    )
 }
 
 const updateValue = e => {
@@ -285,6 +339,7 @@ const rerender = value => {
       <input onInput={updateValue} value={value} />
       <h2>Hello {value}</h2>
       <App name={`function component value is ${value}`}/>
+      <Counter/>
     </div>
   )
   Didact.render(element, container)
