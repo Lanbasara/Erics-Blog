@@ -37,7 +37,10 @@ function VritualList() {
       const data = listData.concat(temp);
       setListData(data);
     }
-    const offset = scrollTop - (scrollTop % itemHeight);
+    // get scrollTop again, in order to solve the abnormal offset caused by await
+    const scrollTopNew = e?.target?.scrollTop;
+    const offset = scrollTopNew - (scrollTopNew % itemHeight);
+    console.log("offset is", offset);
     setOffset(offset);
     setLoading(false);
   };
@@ -55,9 +58,9 @@ function VritualList() {
     })();
   }, []);
 
-  useEffect(() => {
-    console.count("rerender");
-  });
+  // useEffect(() => {
+  //   console.count("rerender");
+  // });
 
   return (
     <div className="view-port" id="view-port" onScroll={handleScroll}>
