@@ -1,0 +1,15 @@
+.App {
+    font-family: sans-serif;
+    text-align: center;
+    height: 90vh;
+    overflow: hidden;
+  }
+  .view-port {
+    height: 500px;
+    width: 100%;
+    overflow: hidden scroll;
+  }
+  .item {
+    height: 100px;
+  }
+  
