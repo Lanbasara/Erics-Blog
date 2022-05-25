@@ -30,6 +30,19 @@ describe('my-promise', () => {
         .then(v => v * 4)
         .then(v => expect(v).toEqual(12))
     })
+
+
+    it('then return a new Promise', () => {
+      return promise().then(() => {
+        return new MyPromise((res) => {
+          setTimeout(() => {
+            res(3)
+          },3000)
+        })
+      }).then((val) => {
+        expect(val).toBe(3)
+      })
+    })
   })
 
   describe("catch", () => {
@@ -149,6 +162,7 @@ describe('my-promise', () => {
       })
     })
   })
+
 })
 
 
