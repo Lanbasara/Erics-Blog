@@ -282,7 +282,7 @@ class MyPromise {
 }
 
 /**
- * Impentment of UnCatchedPromiseError, which extends basic Error class
+ * Implement of UnCatchedPromiseError, which extends basic Error class
  */
 class UnCatchedPromiseError extends Error {
     constructor(error){
