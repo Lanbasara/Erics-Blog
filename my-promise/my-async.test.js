@@ -81,4 +81,21 @@ describe('my-async-test', () => {
             expect(e).toBe('b')
         }
     }, 5000)
+
+
+    it('with async params', async () => {
+        let getABC = function* (params) {
+            try {
+                const a = yield getPromise("a", 500).then(res => `${res}${res}${params}`);
+                const b = yield getPromise("b", 500);
+                const c = yield getPromise("c", 500);
+                let res = [a, b, c]
+                return res
+            } catch (e) {
+                console.log('e is', e)
+            }
+        }
+        const res = await myAsync(getABC,"bc")();
+        expect(res).toEqual(["aabc", 'b', 'c'])
+    }, 5000)
 })
