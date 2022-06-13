@@ -1,4 +1,4 @@
-function myAsync(generator) {
+function myAsync(generator, ...params) {
     return function(){
         return new Promise((res,rej) => {
             function handler(iteratorRes){
@@ -16,7 +16,7 @@ function myAsync(generator) {
                     })
                 }
             }
-            let iterator = generator.apply(this,arguments)
+            let iterator = generator.apply(this,Array.from(arguments).concat(params))
         
             try {
                 handler(iterator.next())
