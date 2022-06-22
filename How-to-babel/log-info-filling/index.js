@@ -32,9 +32,12 @@ const ast = parse.parse(sourceCode,{
 traverse(ast, {
     // call this method when node is CallExpression
     CallExpression (path) {
+        let reg = /console\.\w+/
         // use AST node generator code string which can help us analyse ATS node more efficiently
         // its very bright to generator code in ast traverse process
         const calleeName = generator(path.node.callee).code
+        // or use path toString method
+        // const callName = path.get('callee').toString()
         console.log('calleeName is',calleeName,reg.test(calleeName))
         if(reg.test(calleeName)){
             let resNode = types.stringLiteral(`${path.node.arguments[0]?.name || String(path.node.arguments[0]?.value)} is`)
