@@ -32,9 +32,11 @@ const ast = parse.parse(sourceCode,{
 traverse(ast, {
     // call this method when node is CallExpression
     CallExpression (path) {
-        // if callee is MemberExpresssion
-        if(types.isMemberExpression(path.node.callee) && path.node.callee.object.name === 'console'){
-            // create stringLiteral type node
+        // use AST node generator code string which can help us analyse ATS node more efficiently
+        // its very bright to generator code in ast traverse process
+        const calleeName = generator(path.node.callee).code
+        console.log('calleeName is',calleeName,reg.test(calleeName))
+        if(reg.test(calleeName)){
             let resNode = types.stringLiteral(`${path.node.arguments[0]?.name || String(path.node.arguments[0]?.value)} is`)
             path.node.arguments.unshift(resNode)
         }
@@ -42,5 +44,5 @@ traverse(ast, {
 });
 
 
-const {code : newCode, map} = generator(ast)
+const {code : newCode} = generator(ast)
 console.log('newCode is',newCode)
