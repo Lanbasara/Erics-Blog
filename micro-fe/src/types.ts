@@ -5,16 +5,5 @@ export interface IAppInfo {
     activeRule : string;
 }
 
-export const registerMicroApps = (appList : Array<IAppInfo>) => {
-    setAppList(appList)
-}
 
-let appList : Array<IAppInfo> = []
-
-export const setAppList = (list : Array<IAppInfo>) => {
-    appList = list
-}
-
-export const getAppList = () => {
-    return appList
-}
+export type EventType = 'hashchange' | 'popstate'
