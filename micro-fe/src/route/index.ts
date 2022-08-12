@@ -1,9 +1,32 @@
+import { runBeforeLoad, runBoostrap, runMounted } from "src/lifeCycle"
 import { EventType } from "src/types"
+import { getAppListStatus } from "src/utils"
 
 const originalPush = window.history.pushState
 const originalReplace = window.history.replaceState
 
 let historyEvent: PopStateEvent | null = null
+
+let lastUrl : string | null = null
+
+export const reroute = (url : string) => {
+    if(url !== lastUrl){
+        const {actives , unmounts } = getAppListStatus()// 匹配路由， 寻找符合条件的子应用
+        Promise.all(unmounts.map(async (app) => {
+            await runUnmounted(app)
+        }).concat(
+            actives.map(async (app) => {
+                await runBeforeLoad(app)
+                await runBoostrap(app)
+                await runMounted(app)
+            })
+        )
+        ).then(() => {
+            callCapturedListeners()
+        })
+    }
+    lastUrl = url || location.href
+}
 
 export const hijackRoute = () => {
     window.history.pushState = (...args) => {
@@ -62,4 +85,8 @@ export function callCapturedListeners(){
         })
         historyEvent =  null
     }
+}
+
+function runUnmounted(app: any) {
+    throw new Error("Function not implemented.")
 }
