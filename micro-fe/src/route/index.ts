@@ -1,6 +1,12 @@
-import { runBeforeLoad, runBoostrap, runMounted } from "src/lifeCycle"
 import { EventType } from "src/types"
+import { runBeforeLoad, runBoostrap, runMounted, runUnmounted } from "src/lifeCycle"
 import { getAppListStatus } from "src/utils"
+
+const capturedListeners : Record<EventType, Function[]> = {
+    hashchange : [],
+    popstate : []
+}
+
 
 const originalPush = window.history.pushState
 const originalReplace = window.history.replaceState
@@ -11,8 +17,9 @@ let lastUrl : string | null = null
 
 export const reroute = (url : string) => {
     if(url !== lastUrl){
-        const {actives , unmounts } = getAppListStatus()// 匹配路由， 寻找符合条件的子应用
-        Promise.all(unmounts.map(async (app) => {
+        const { actives , unmounts } = getAppListStatus()// 匹配路由， 寻找符合条件的子应用
+        Promise.all(
+            unmounts.map(async (app) => {
             await runUnmounted(app)
         }).concat(
             actives.map(async (app) => {
@@ -28,30 +35,35 @@ export const reroute = (url : string) => {
     lastUrl = url || location.href
 }
 
+
+const handleUrlChange = () => {
+    reroute(location.href)
+}
+
 export const hijackRoute = () => {
     window.history.pushState = (...args) => {
         originalPush.apply(window.history,args)
         // TODO: pushState了之后，如何处理子应用的加载
+        historyEvent = new PopStateEvent("popstate")
+        // @ts-ignore
+        args[2] && reroute(args[2])
     }
     window.history.replaceState = (...args) => {
         originalReplace.apply(window.history,args)
         // TODO: pushState了之后，如何处理子应用的加载
+        historyEvent = new PopStateEvent('popstate')
+        // @ts-ignore
+        args[2] && reroute(args[2])
     }
 
-    window.addEventListener('hashchange' ,() => {})
+    window.addEventListener('hashchange' ,handleUrlChange)
 
-    window.addEventListener('popstate', () => {})
+    window.addEventListener('popstate', handleUrlChange)
 
     window.addEventListener = hijackEventListener(window.addEventListener)
 
     window.removeEventListener = hijackEventListener(window.removeEventListener)
 }
-
-const capturedListeners : Record<EventType, Function[]> = {
-    hashchange : [],
-    popstate : []
-}
-
 
 const hasListeners = (name : EventType, fn : Function) => {
     return capturedListeners[name].filter((listener) => listener === fn).length
@@ -85,8 +97,4 @@ export function callCapturedListeners(){
         })
         historyEvent =  null
     }
-}
-
-function runUnmounted(app: any) {
-    throw new Error("Function not implemented.")
 }

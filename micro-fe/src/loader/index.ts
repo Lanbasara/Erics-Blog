@@ -1,5 +1,7 @@
 import { IInternalAppInfo } from "src/types";
+// @ts-ignore
 import { fetchResource } from "src/utils";
+// @ts-ignore
 import { parseHTML } from "./parse";
 import { importEntry } from 'import-html-entry'
 import { ProxySandBox } from "./sandbox";

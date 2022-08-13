@@ -1,5 +1,5 @@
-import { IInternalAppInfo } from "src/types";
 import { getCompletionURL } from "src/utils";
+import { IInternalAppInfo } from "src/types";
 
 const scripts: string[] = []
 const links: string[] = []
@@ -8,7 +8,6 @@ const inlineScript: string[] = []
 
 export const parseHTML = (parent:HTMLElement, app:IInternalAppInfo) => {
     const children = Array.from(parent.children) as HTMLElement[]
-
     children.length && children.forEach((item) => parseHTML(item,app))
 
     for(const dom of children){

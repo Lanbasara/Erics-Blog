@@ -1,5 +1,6 @@
-import { AppStatus } from "src/enums";
 import { IAppInfo, IInternalAppInfo, ILifeCycle } from "src/types";
+import { AppStatus } from "src/enums";
+import { loadHTML } from '../loader'
 
 let lifeCycle :ILifeCycle = {};
 
@@ -7,12 +8,12 @@ export const setLifeCycle = (list : ILifeCycle) => {
     lifeCycle = list
 }
 
-export const runBeforeLoad = async (app:IInternalAppInfo){
+export const runBeforeLoad = async (app:IInternalAppInfo) => {
     app.status = AppStatus.LOADED
     await runLifeCycle("beforeLoad",app)
     
     // TODO : 加载子应用资源
-    app = await 加载子应用资源
+    app = await loadHTML(app)
     app.status = AppStatus.LOADED
 }
 
@@ -30,6 +31,14 @@ export const runMounted = async (app : IInternalAppInfo) => {
     app.status = AppStatus.MOUNTING
     await app.mount?.(app)
     app.status = AppStatus.MOUNTED
+    await runLifeCycle('mounted',app)
+}
+
+export const runUnmounted = async (app : IInternalAppInfo) => {
+    app.status = AppStatus.UNMOUNTING
+    app.proxy.inactive()
+    await app.unmount?.(app)
+    app.status = AppStatus.NOT_MOUNTED
     await runLifeCycle('unmounted',app)
 }
 

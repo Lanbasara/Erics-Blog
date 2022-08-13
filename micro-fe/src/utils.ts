@@ -1,8 +1,11 @@
-import { getAppList } from "./appList"
 import { match } from 'path-to-regexp'
+import { getAppList } from "./appList"
 import { IInternalAppInfo } from "./types"
 import { AppStatus } from "./enums"
 import { importEntry } from 'import-html-entry'
+import { getCache, setCatch } from './cache'
+
+
 export const getAppListStatus = () => {
     const actives : IInternalAppInfo[] = []
     const unmounts : IInternalAppInfo[] = []
@@ -30,8 +33,11 @@ export const getAppListStatus = () => {
 }
 
 
-export const fetchResource = async (url : string) => {
-    return await fetch(url).then(async (res) => await res.text())
+export const fetchResource = async (url :string ,appName:string) => {
+    if(getCache(appName,url)) return getCache(appName,url)
+    const data = await fetch(url).then(async (res) => await res.text())
+    setCatch(appName,url,data)
+    return data
 }
 
 

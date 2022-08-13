@@ -1,9 +1,18 @@
 import { getAppList, setAppList } from "./appList"
-import { AppStatus } from "./enums"
 import { setLifeCycle } from "./lifeCycle"
-import { hijackRoute, reroute } from "./route"
 import { IAppInfo, IInternalAppInfo, ILifeCycle } from "./types"
+import { hijackRoute, reroute } from "./route"
+import { AppStatus } from "./enums"
 import { prefetch } from "./utils"
+
+export const registerMicroApps = (
+    appList : Array<IAppInfo>, 
+    lifeCycle?:ILifeCycle
+) => {
+    setAppList(appList)
+    lifeCycle && setLifeCycle(lifeCycle)
+}
+
 
 export const start = () => {
     const list = getAppList()
@@ -20,11 +29,5 @@ export const start = () => {
             prefetch(app as IInternalAppInfo)
         }
     })
-}
-
-
-export const registerMicroApps = (appList : Array<IAppInfo>, lifeCycle?:ILifeCycle) => {
-    setAppList(appList)
-    lifeCycle && setLifeCycle(lifeCycle)
 }
 
