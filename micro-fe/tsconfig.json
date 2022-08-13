@@ -9,7 +9,7 @@
       "noUnusedLocals": true,
       "noUnusedParameters": true,
       "noFallthroughCasesInSwitch": true,
-      "outDir": "apps/main/dist",
+      "outDir": "./dist",
       "lib": [
         "dom",
         "esnext",

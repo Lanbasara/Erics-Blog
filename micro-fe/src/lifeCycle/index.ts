@@ -1,5 +1,5 @@
 import { IAppInfo, IInternalAppInfo, ILifeCycle } from "src/types";
-import { AppStatus } from "src/enums";
+import { AppStatus } from "../enums";
 import { loadHTML } from '../loader'
 
 let lifeCycle :ILifeCycle = {};

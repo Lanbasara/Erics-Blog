@@ -1,6 +1,6 @@
-import { EventType } from "src/types"
-import { runBeforeLoad, runBoostrap, runMounted, runUnmounted } from "src/lifeCycle"
-import { getAppListStatus } from "src/utils"
+import { EventType } from "../types"
+import { runBeforeLoad, runBoostrap, runMounted, runUnmounted } from "../lifeCycle"
+import { getAppListStatus } from "../utils"
 
 const capturedListeners : Record<EventType, Function[]> = {
     hashchange : [],
