@@ -15,14 +15,16 @@ function App() {
                 <Link to="/vue">Vue</Link>
               </li>
               <li>
-                <Link to="/react2">React2</Link>
+                <Link to="/vanilla">Vanilla</Link>
+              </li>
+              <li>
+                <Link to="/react2">React3</Link>
               </li>
             </ul>
           </nav>
         </div>
       </Router>
       <div id="micro-container"></div>
-      <div id="micro-container2"></div>
     </div>
   );
 }

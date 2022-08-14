@@ -6,6 +6,9 @@ window.addEventListener("hashchange", (e) => {
   console.log("hashchange", e);
 });
 
-setTimeout(() => {
-  window.location.pathname = "test2.html";
-}, 7000);
+window.vanillaJs = {
+  unmount: function () {
+    console.log("vanillaJs unmout");
+    app.innerHTML = "";
+  },
+};

@@ -202,7 +202,8 @@ module.exports = function (webpackEnv) {
     output: {
       // The build folder.
       path: paths.appBuild,
-      library: "reactSub2",
+      library: "reactSub3",
+      libraryTarget: "umd",
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.

@@ -7,7 +7,7 @@ var links = [];
 var inlineScript = [];
 var parseHTML = function (parent, app) {
     var children = Array.from(parent.children);
-    children.length && children.forEach(function (item) { return exports.parseHTML(item, app); });
+    children.length && children.forEach(function (item) { return (0, exports.parseHTML)(item, app); });
     for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
         var dom = children_1[_i];
         if (/^(link)$/i.test(dom.tagName)) {
@@ -22,7 +22,7 @@ var parseHTML = function (parent, app) {
             data.url && scripts.push(data.url);
         }
         else if (/^(img)$/i.test(dom.tagName) && dom.hasAttribute('src')) {
-            dom.setAttribute('src', utils_1.getCompletionURL(dom.getAttribute('src'), app.entry));
+            dom.setAttribute('src', (0, utils_1.getCompletionURL)(dom.getAttribute('src'), app.entry));
         }
     }
     return {
@@ -44,7 +44,7 @@ var parseScript = function (script, parent, app) {
     // @ts-ignore
     comment && parent.replaceChild(comment, script);
     return {
-        url: utils_1.getCompletionURL(src, app.entry), text: script.innerHTML
+        url: (0, utils_1.getCompletionURL)(src, app.entry), text: script.innerHTML
     };
 };
 var parseLink = function (link, parent, app) {
@@ -55,9 +55,9 @@ var parseLink = function (link, parent, app) {
         comment = document.createComment('link replaced by micro');
         // @ts-ignore
         comment && parent.replaceChild(comment, link);
-        return utils_1.getCompletionURL(href, app.entry);
+        return (0, utils_1.getCompletionURL)(href, app.entry);
     }
     else if (href) {
-        link.setAttribute('href', utils_1.getCompletionURL(href, app.entry));
+        link.setAttribute('href', (0, utils_1.getCompletionURL)(href, app.entry));
     }
 };

@@ -12,6 +12,7 @@ root.render(
 );
 
 export const unmount = function () {
+  console.log("reactSub3 unmount");
   root.unmount();
 };
 

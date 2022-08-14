@@ -21,9 +21,15 @@ const appList = [
     entry: "http://localhost:8080",
   },
   {
-    name: "reactSub2",
+    name: "vanillaJs",
+    activeRule: "/vanilla",
+    container: "#micro-container",
+    entry: "http://localhost:5500/micro-fe/apps/sub2/index.html",
+  },
+  {
+    name: "reactSub3",
     activeRule: "/react2",
-    container: "#micro-container2",
+    container: "#micro-container",
     entry: "http://localhost:3000/",
   },
 ];
