@@ -45,9 +45,9 @@ var cache_1 = require("./cache");
 var getAppListStatus = function () {
     var actives = [];
     var unmounts = [];
-    var list = appList_1.getAppList();
+    var list = (0, appList_1.getAppList)();
     list.forEach(function (app) {
-        var isActive = path_to_regexp_1.match(app.activeRule, { end: false })(location.pathname);
+        var isActive = (0, path_to_regexp_1.match)(app.activeRule, { end: false })(location.pathname);
         switch (app.status) {
             case enums_1.AppStatus.NOT_LOADED:
             case enums_1.AppStatus.LOADED:
@@ -69,8 +69,8 @@ var fetchResource = function (url, appName) { return __awaiter(void 0, void 0, v
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (cache_1.getCache(appName, url))
-                    return [2 /*return*/, cache_1.getCache(appName, url)];
+                if ((0, cache_1.getCache)(appName, url))
+                    return [2 /*return*/, (0, cache_1.getCache)(appName, url)];
                 return [4 /*yield*/, fetch(url).then(function (res) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0: return [4 /*yield*/, res.text()];
@@ -79,7 +79,7 @@ var fetchResource = function (url, appName) { return __awaiter(void 0, void 0, v
                     }); }); })];
             case 1:
                 data = _a.sent();
-                cache_1.setCatch(appName, url, data);
+                (0, cache_1.setCatch)(appName, url, data);
                 return [2 /*return*/, data];
         }
     });
@@ -94,7 +94,7 @@ function getCompletionURL(src, baseURI) {
 }
 exports.getCompletionURL = getCompletionURL;
 function getCompletionBaseURL(url) {
-    return url.startsWith('//') ? "" + location.protocol + url : url;
+    return url.startsWith('//') ? "".concat(location.protocol).concat(url) : url;
 }
 exports.getCompletionBaseURL = getCompletionBaseURL;
 var prefetch = function (app) { return __awaiter(void 0, void 0, void 0, function () {
@@ -103,7 +103,7 @@ var prefetch = function (app) { return __awaiter(void 0, void 0, void 0, functio
             var _a, getExternalScripts, getExternalStyleSheets;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, import_html_entry_1.importEntry(app.entry)];
+                    case 0: return [4 /*yield*/, (0, import_html_entry_1.importEntry)(app.entry)];
                     case 1:
                         _a = _b.sent(), getExternalScripts = _a.getExternalScripts, getExternalStyleSheets = _a.getExternalStyleSheets;
                         requestIdleCallback(getExternalStyleSheets);

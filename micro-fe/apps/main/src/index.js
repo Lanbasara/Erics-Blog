@@ -20,6 +20,18 @@ const appList = [
     container: "#micro-container",
     entry: "http://localhost:8080",
   },
+  {
+    name: "vanillaJs",
+    activeRule: "/vanilla",
+    container: "#micro-container",
+    entry: "http://localhost:5500/micro-fe/apps/sub2/index.html",
+  },
+  {
+    name: "reactSub3",
+    activeRule: "/react2",
+    container: "#micro-container",
+    entry: "http://localhost:3000/",
+  },
 ];
 
 // If you want to start measuring performance in your app, pass a function

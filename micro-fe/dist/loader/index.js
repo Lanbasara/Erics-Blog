@@ -45,7 +45,7 @@ var loadHTML = function (app) { return __awaiter(void 0, void 0, void 0, functio
         switch (_b.label) {
             case 0:
                 container = app.container, entry = app.entry;
-                return [4 /*yield*/, import_html_entry_1.importEntry(entry)];
+                return [4 /*yield*/, (0, import_html_entry_1.importEntry)(entry)];
             case 1:
                 _a = _b.sent(), template = _a.template, getExternalScripts = _a.getExternalScripts, getExternalStyleSheets = _a.getExternalStyleSheets;
                 dom = document.querySelector(container);
@@ -85,6 +85,6 @@ var runJs = function (value, app) {
         window.__CURRENT_PROXY__ = app.proxy.proxy;
     }
     app.proxy.active();
-    var code = "\n    return (window => {\n        " + value + "\n        return window['" + app.name + "']\n    })(window.__CURRENT_PROXY__)\n    ";
+    var code = "\n    return (window => {\n        ".concat(value, "\n        return window['").concat(app.name, "']\n    })(window.__CURRENT_PROXY__)\n    ");
     return new Function(code)();
 };

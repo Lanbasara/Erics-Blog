@@ -54,7 +54,7 @@ var runBeforeLoad = function (app) { return __awaiter(void 0, void 0, void 0, fu
                 ];
             case 1:
                 _a.sent();
-                return [4 /*yield*/, loader_1.loadHTML(app)];
+                return [4 /*yield*/, (0, loader_1.loadHTML)(app)];
             case 2:
                 // TODO : 加载子应用资源
                 app = _a.sent();

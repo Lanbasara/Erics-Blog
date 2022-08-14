@@ -49,11 +49,11 @@ var historyEvent = null;
 var lastUrl = null;
 var reroute = function (url) {
     if (url !== lastUrl) {
-        var _a = utils_1.getAppListStatus(), actives = _a.actives, unmounts = _a.unmounts; // 匹配路由， 寻找符合条件的子应用
+        var _a = (0, utils_1.getAppListStatus)(), actives = _a.actives, unmounts = _a.unmounts; // 匹配路由， 寻找符合条件的子应用
         Promise.all(unmounts.map(function (app) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, lifeCycle_1.runUnmounted(app)];
+                    case 0: return [4 /*yield*/, (0, lifeCycle_1.runUnmounted)(app)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -62,13 +62,13 @@ var reroute = function (url) {
         }); }).concat(actives.map(function (app) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, lifeCycle_1.runBeforeLoad(app)];
+                    case 0: return [4 /*yield*/, (0, lifeCycle_1.runBeforeLoad)(app)];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, lifeCycle_1.runBoostrap(app)];
+                        return [4 /*yield*/, (0, lifeCycle_1.runBoostrap)(app)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, lifeCycle_1.runMounted(app)];
+                        return [4 /*yield*/, (0, lifeCycle_1.runMounted)(app)];
                     case 3:
                         _a.sent();
                         return [2 /*return*/];
@@ -82,7 +82,7 @@ var reroute = function (url) {
 };
 exports.reroute = reroute;
 var handleUrlChange = function () {
-    exports.reroute(location.href);
+    (0, exports.reroute)(location.href);
 };
 var hijackRoute = function () {
     window.history.pushState = function () {
@@ -94,7 +94,7 @@ var hijackRoute = function () {
         // TODO: pushState了之后，如何处理子应用的加载
         historyEvent = new PopStateEvent("popstate");
         // @ts-ignore
-        args[2] && exports.reroute(args[2]);
+        args[2] && (0, exports.reroute)(args[2]);
     };
     window.history.replaceState = function () {
         var args = [];
@@ -105,7 +105,7 @@ var hijackRoute = function () {
         // TODO: pushState了之后，如何处理子应用的加载
         historyEvent = new PopStateEvent('popstate');
         // @ts-ignore
-        args[2] && exports.reroute(args[2]);
+        args[2] && (0, exports.reroute)(args[2]);
     };
     window.addEventListener('hashchange', handleUrlChange);
     window.addEventListener('popstate', handleUrlChange);

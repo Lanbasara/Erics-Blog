@@ -7,20 +7,20 @@ var route_1 = require("./route");
 var enums_1 = require("./enums");
 var utils_1 = require("./utils");
 var registerMicroApps = function (appList, lifeCycle) {
-    appList_1.setAppList(appList);
-    lifeCycle && lifeCycle_1.setLifeCycle(lifeCycle);
+    (0, appList_1.setAppList)(appList);
+    lifeCycle && (0, lifeCycle_1.setLifeCycle)(lifeCycle);
 };
 exports.registerMicroApps = registerMicroApps;
 var start = function () {
-    var list = appList_1.getAppList();
+    var list = (0, appList_1.getAppList)();
     if (!list.length) {
         throw new Error('Please register app first');
     }
-    route_1.hijackRoute();
-    route_1.reroute(window.location.href);
+    (0, route_1.hijackRoute)();
+    (0, route_1.reroute)(window.location.href);
     list.forEach(function (app) {
         if (app.status === enums_1.AppStatus.NOT_LOADED) {
-            utils_1.prefetch(app);
+            (0, utils_1.prefetch)(app);
         }
     });
 };
