@@ -35,6 +35,7 @@ const isEvent = (key) => key.startsWith("on");
 const isProperty = (key) => key !== "children" && !isEvent(key);
 const isNew = (prev, next) => (key) => prev[key] !== next[key];
 const isGone = (prev, next) => (key) => !(key in next);
+const isStyle = (key) => key === "style";
 function updateDom(dom, prevProps, nextProps) {
   //Remove old or changed event listeners
   Object.keys(prevProps)
@@ -58,7 +59,11 @@ function updateDom(dom, prevProps, nextProps) {
     .filter(isProperty)
     .filter(isNew(prevProps, nextProps))
     .forEach((name) => {
-      dom[name] = nextProps[name];
+      if (isStyle(name)) {
+        Object.assign(dom.style, nextProps[name]);
+      } else {
+        dom[name] = nextProps[name];
+      }
     });
 
   // Add event listeners
@@ -357,7 +362,7 @@ const rerender = (value) => {
   const element = (
     <div>
       <input onInput={updateValue} value={value} />
-      <h2>Hello {value}</h2>
+      <h2 style={{ color: "red", background: "blue" }}>Hello {value}</h2>
       <App name={`function component value is ${value}`} />
       <Counter />
     </div>
