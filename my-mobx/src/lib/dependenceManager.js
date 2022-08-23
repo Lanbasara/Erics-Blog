@@ -1,27 +1,41 @@
-class DependenceManager {
-  Dep = null;
-  _store = {};
-  beginCollect(handler) {
-    DependenceManager.Dep = handler;
+class DependenceManager{
+  Dep = null
+  Target = null
+  #store = {}
+
+  beginCollect(handler,target){
+    DependenceManager.Dep = handler
+    DependenceManager.Target = target
   }
-  collect(id) {
-    if (DependenceManager.Dep) {
-      this._store[id] = this._store[id] || {};
-      this._store[id].watchers = this._store[id].watchers || [];
-      this._store[id].watchers.push(DependenceManager.Dep);
+
+  endCollect(){
+    if(DependenceManager.Dep){
+      DependenceManager.Dep = null
+    }
+    if(DependenceManager.Target){
+      DependenceManager.Target = null
     }
   }
-  endCollect() {
-    DependenceManager.Dep = null;
+
+  collect(id){
+    if(DependenceManager.Dep){
+      this.#store[id] = this.#store[id] || {}
+      this.#store[id].watchers = this.#store[id].watchers || []
+      this.#store[id].target = DependenceManager.Target
+      this.#store[id].watchers.push(DependenceManager.Dep)
+    }
   }
-  trigger(id) {
-    const store = this._store[id];
-    if (store && store.watchers) {
-      store.watchers.forEach((s) => {
-        s.call(this);
+
+  trigger(id){
+    const store = this.#store[id]
+    if(store && store.watchers){
+      store.watchers.forEach(cb => {
+        cb.call(store.target || this)
       });
     }
   }
+
+
 }
 
-export default new DependenceManager();
+export default new DependenceManager()

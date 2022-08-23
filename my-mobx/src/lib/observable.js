@@ -1,71 +1,78 @@
-import dependenceManager from "./dependenceManager";
+ import depedenceManager from './dependenceManager'
+ 
+ let observableId = 0
 
-let observableId = 0;
-
-class Observable {
-  id = 0;
-  constructor(v) {
-    this.id = observableId++;
-    this.value = v;
+ class Observable {
+  constructor(v){
+    this.id = observableId++
+    this.value = v
   }
-  set(v) {
-    if (Array.isArray(v)) {
-      this._wrapArray(v);
+  get(){
+    depedenceManager.collect(this.id)
+    return this.value
+  }
+  set(value){
+    if(Array.isArray(value)){
+      this._wrapArray(value)
     } else {
-      this.value = v;
+      this.value = value
     }
-    dependenceManager.trigger(this.id);
+    depedenceManager.trigger(this.id)
   }
-  _wrapArray(arr) {
-    this.value = new Proxy(arr, {
-      set(obj, key, value) {
-        obj[key] = value;
-        // dependenceManager.trigger(this.id);
-        if (key !== "length") {
-          dependenceManager.trigger(this.id);
-        }
-        return true;
-      },
-    });
-  }
-  get() {
-    dependenceManager.collect(this.id);
-    return this.value;
-  }
-}
 
-function createObservable(target) {
-  if (typeof target === "object") {
-    for (let property in target) {
-      if (target.hasOwnProperty(property)) {
-        const observable = new Observable(target[property]);
-        Object.defineProperty(target, property, {
-          get() {
-            return observable.get();
+  _wrapArray(value){
+    this.value = new Proxy(value, {
+      set(obj,key,value){
+        obj[key] = value
+        if(key !== 'length'){
+          depedenceManager.trigger(this.id)
+        }
+        return true
+      }
+    })
+  }
+ }
+
+ function observable(target,name, descriptor){
+  let fn = descriptor.value || descriptor.initializer
+  if(!fn){
+    throw Error('observal fn error')
+  }
+  let value = fn.call(this)
+  createObservable(value)
+  let o = new Observable(value)
+
+  return {
+    enumerable : true,
+    configurable : true,
+    get(){
+      return o.get()
+    },
+    set(value){
+      createObservable(value)
+      return o.set(value)
+    }
+  }
+ }
+
+ function createObservable(target){
+  if(typeof target === 'object'){
+    for(let key in target){
+      if(Object.hasOwnProperty.call(target,key)){
+        const observable = new Observable(target[key])
+        Object.defineProperty(target,key, {
+          get(){
+            return observable.get()
           },
-          set(value) {
-            return observable.set(value);
-          },
-        });
-        createObservable(target[property]);
+          set(value){
+            return observable.set(value)
+          }
+        })
+        createObservable(target[key])
       }
     }
   }
-}
+ }
 
-export default function observable(target, name, descriptor) {
-  const v = descriptor.initializer.call(this);
-  createObservable(v);
-  const o = new Observable(v);
 
-  return {
-    enumerable: true,
-    configurable: true,
-    get: function () {
-      return o.get();
-    },
-    set: function (v) {
-      return o.set(v);
-    },
-  };
-}
+ export default observable

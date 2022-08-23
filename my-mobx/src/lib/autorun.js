@@ -1,7 +1,7 @@
-import dependenceManager from "./dependenceManager";
+import  depedenceManager from './dependenceManager'
 
-export default function autorun(handler) {
-  dependenceManager.beginCollect(handler);
-  handler();
-  dependenceManager.endCollect();
+export default function autorun(handler){
+  depedenceManager.beginCollect(handler)
+  handler()
+  depedenceManager.endCollect()
 }

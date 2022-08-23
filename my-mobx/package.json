@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "parcel ./src/index.html"
+    "start": "parcel ./src/index.html"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -15,5 +15,10 @@
   },
   "keywords": [],
   "author": "Eric Guo <ghkagg@outlook.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "core-decorators": "^0.20.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }
