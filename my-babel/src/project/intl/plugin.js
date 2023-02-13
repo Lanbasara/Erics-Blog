@@ -11,7 +11,7 @@ function nextIntlKey() {
 }
 
 const autoIntlPlugin = declare((api, options, dirname) => {
-  const { name = "intl" } = options;
+    const {name = 'intl'} = options
   api.assertVersion(7);
 
   function getReplaceExpression(path, value, intlUid) {
@@ -42,7 +42,9 @@ const autoIntlPlugin = declare((api, options, dirname) => {
   }
 
   return {
-    pre(file) {},
+    pre(file) {
+        file.set("allText", []);
+    },
     visitor: {
       Program: {
         enter(path, state) {
@@ -57,7 +59,7 @@ const autoIntlPlugin = declare((api, options, dirname) => {
           });
           if (!imported) {
             const uid = path.scope.generateUid("intl");
-            const importAST = api.template.ast(`import ${uid} from ${name}`);
+            const importAST = api.template.ast(`import ${uid} from '${name}'`);
             path.node.body.unshift(importAST);
             state.intlUid = uid;
           }
@@ -81,20 +83,22 @@ const autoIntlPlugin = declare((api, options, dirname) => {
           });
         },
       },
-      StringLiteral(path,state){
-        if (path.node.skipTransfrom) {
-            return;
-          }
-          let key = nextIntlKey();
-          save(state.file, key, path.node.value);
-
-          const replaceExpression = getReplaceExpression(
-            path,
-            key,
-            state.intlUid
-          );
-          path.replaceWith(replaceExpression);
-          path.skip();
+      StringLiteral : {
+        enter(path,state){
+            if (path.node.skipTransfrom) {
+                return;
+              }
+              let key = nextIntlKey();
+              save(state.file, key, path.node.value);
+    
+              const replaceExpression = getReplaceExpression(
+                path,
+                key,
+                state.intlUid
+              );
+              path.replaceWith(replaceExpression);
+              path.skip();
+        }
       },
       TemplateLiteral(path, state) {
         if (path.node.skipTransfrom) {
