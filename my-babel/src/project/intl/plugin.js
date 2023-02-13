@@ -42,7 +42,9 @@ const autoIntlPlugin = declare((api, options, dirname) => {
   }
 
   return {
-    pre(file) {},
+    pre(file) {
+        file.set("allText", []);
+      },
     visitor: {
       Program: {
         enter(path, state) {
