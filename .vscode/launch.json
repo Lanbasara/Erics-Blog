@@ -7,11 +7,11 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "auto-track",
+            "name": "Current-file",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/my-babel/src/project/auto-track/index.js"
+            "program": "${file}"
         }
     ]
 }
