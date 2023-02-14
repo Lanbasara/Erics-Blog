@@ -1,3 +1,4 @@
+// https://babeljs.io/docs/en/babel-helper-plugin-utils
 const { declare } = require("@babel/helper-plugin-utils");
 const fs = require("fs");
 const path = require("path");
@@ -11,7 +12,7 @@ function nextIntlKey() {
 }
 
 const autoIntlPlugin = declare((api, options, dirname) => {
-    const {name = 'intl'} = options
+  const { name = "intl" } = options;
   api.assertVersion(7);
 
   function getReplaceExpression(path, value, intlUid) {
@@ -23,6 +24,7 @@ const autoIntlPlugin = declare((api, options, dirname) => {
         expressParams ? "," + expressParams.join(",") : ""
       })`
     ).expression;
+
     if (
       path.findParent((p) => p.isJSXAttribute()) &&
       !path.findParent((p) => p.isJSXExpressionContainer())
@@ -41,29 +43,66 @@ const autoIntlPlugin = declare((api, options, dirname) => {
     file.set("allText", allText);
   }
 
+  /**
+   * 插件基本结构
+   * return {
+   *  pre(file){
+   *  },
+   *  visitor:{
+   *  },
+   *  post(file){
+   *  }
+   * }
+   */
+
   return {
+    /**
+     * file = state.file
+     * file是一个Map，用来保存一些全局数据
+     */
     pre(file) {
-        file.set("allText", []);
+      file.set("allText", []);
     },
     visitor: {
       Program: {
+        /**
+         * invoke in different time
+         * 
+         * enter 
+         * exit
+         */
         enter(path, state) {
           let imported;
+          /**
+           * In this path visitor, We can traverse other path by ourselves
+           */
           path.traverse({
             ImportDeclaration(p) {
               const source = p.node.source.value;
               if (source === name) {
                 imported = true;
+                /**
+                 * path.node ==> get the real ast node by path
+                 * path.get(path) ==> new path
+                 * path.toString() ==> the code string
+                 */
+                state.intlUid = p.get('specifiers.0').toString()
               }
             },
           });
           if (!imported) {
             const uid = path.scope.generateUid("intl");
+            /**
+             * template.ast(Code string) ==> AST
+              */
             const importAST = api.template.ast(`import ${uid} from '${name}'`);
             path.node.body.unshift(importAST);
             state.intlUid = uid;
           }
           path.traverse({
+            /**
+             * special syntax for traverse function
+             */
             "StringLiteral|TemplateLiteral"(path, state) {
               if (path.node.leadingComments) {
                 path.node.leadingComments = path.node.leadingComments.filter(
@@ -76,29 +115,43 @@ const autoIntlPlugin = declare((api, options, dirname) => {
                   }
                 );
               }
+              /**
+               * path.findParent()
+               * 
+               * judge if the node is xxx type
+               * path.isXXXXXX()
+               */
               if (path.findParent((p) => p.isImportDeclaration())) {
+                /**
+                 * add some custom props in node
+                 */
                 path.node.skipTransfrom = true;
               }
             },
           });
         },
       },
-      StringLiteral : {
-        enter(path,state){
-            if (path.node.skipTransfrom) {
-                return;
-              }
-              let key = nextIntlKey();
-              save(state.file, key, path.node.value);
-    
-              const replaceExpression = getReplaceExpression(
-                path,
-                key,
-                state.intlUid
-              );
-              path.replaceWith(replaceExpression);
-              path.skip();
-        }
+      StringLiteral: {
+        enter(path, state) {
+          if (path.node.skipTransfrom) {
+            return;
+          }
+          let key = nextIntlKey();
+          save(state.file, key, path.node.value);
+
+          const replaceExpression = getReplaceExpression(
+            path,
+            key,
+            state.intlUid
+          );
+          path.replaceWith(replaceExpression);
+          /**
+           * after replace
+           * 
+           * need to skip to avoid dead loop
+           */
+          path.skip();
+        },
       },
       TemplateLiteral(path, state) {
         if (path.node.skipTransfrom) {

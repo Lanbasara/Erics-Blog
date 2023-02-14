@@ -1,4 +1,4 @@
-import intl from 'intl2';
+import intl from 'intl';
 /**
  * App
  */
