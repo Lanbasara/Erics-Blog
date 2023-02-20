@@ -22,5 +22,10 @@
     "@babel/template": "^7.20.7",
     "@babel/traverse": "^7.20.13",
     "@babel/types": "^7.20.7"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.0",
+    "doctrine": "^3.0.0",
+    "fs-extra": "^11.1.0"
   }
 }
