@@ -4,8 +4,8 @@ module.exports = function(docs) {
     docs.forEach(doc => {
         if (doc.type === 'function') {
             str += '## ' + doc.name + '\n';
-            str += doc.doc.description + '\n';
-            if (doc.doc.tags) {
+            str += doc?.doc?.description + '\n';
+            if (doc?.doc?.tags) {
                 doc.doc.tags.forEach(tag => {
                     str += tag.name + ': ' + tag.description + '\n'; 
                 })

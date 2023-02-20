@@ -5,14 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "babel --config-file ./babel.config.js --out-dir dist ./asset"
+    "compile": "babel --extensions '.ts,.js' ./src/project/auto-api-doc/sourcecode.ts --config-file ./babel.config.js --out-dir dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/cli": "^7.20.7",
-    "@babel/core": "^7.20.12",
     "@babel/generator": "^7.20.14",
     "@babel/helper-module-imports": "^7.18.6",
     "@babel/helper-plugin-utils": "^7.20.2",
@@ -24,7 +22,13 @@
     "@babel/types": "^7.20.7"
   },
   "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/plugin-syntax-typescript": "^7.20.0",
+    "@babel/plugin-transform-typescript": "^7.20.13",
+    "@babel/preset-typescript": "^7.18.6",
     "@types/babel__core": "^7.20.0",
+    "babel-plugin-ghk-tstry": "^1.0.2",
     "doctrine": "^3.0.0",
     "fs-extra": "^11.1.0"
   }
