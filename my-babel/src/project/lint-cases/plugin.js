@@ -39,6 +39,8 @@ const lintForDirection = declare((api, options) => {
         /**
          * path.scope.getBinding(string)
          * get the bind path from scope chain
+         * 
+         * Tips: the return of the getBinding is not a path, the path can be getten by .path
          */
         const binding = path.scope.getBinding(assignTarget);
         if (binding) {
