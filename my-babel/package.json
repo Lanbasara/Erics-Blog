@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "babel --extensions '.ts,.js' ./src/project/auto-api-doc/sourcecode.ts --config-file ./babel.config.js --out-dir dist"
+    "compile": "babel --extensions '.ts,.js' ./src/project/auto-api-doc/sourcecode.ts --config-file ./babel.config.js --out-dir dist",
+    "marcro-build": "babel ./src/macro/sourcecode.js  --config-file ./src/macro/babel.config.js --out-dir dist"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,8 @@
     "@babel/template": "^7.20.7",
     "@babel/traverse": "^7.20.13",
     "@babel/types": "^7.20.7",
+    "babel-core": "^6.26.3",
+    "babel-macros": "^2.0.0",
     "chalk": "^5.2.0"
   },
   "devDependencies": {
@@ -29,9 +32,11 @@
     "@babel/plugin-syntax-typescript": "^7.20.0",
     "@babel/plugin-transform-typescript": "^7.20.13",
     "@babel/preset-typescript": "^7.18.6",
+    "@types/babel-plugin-macros": "^3.1.0",
     "@types/babel__core": "^7.20.0",
     "@types/fs-extra": "^11.0.1",
     "babel-plugin-ghk-tstry": "^1.0.2",
+    "babel-plugin-macros": "^3.1.0",
     "doctrine": "^3.0.0",
     "fs-extra": "^11.1.0"
   }
