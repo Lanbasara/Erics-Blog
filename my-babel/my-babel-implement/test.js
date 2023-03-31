@@ -11,7 +11,10 @@ const ast = parse(sourceCode, {
 });
 
 traverse(ast, {
-  NumericLiteral(node) {
-    console.log("this is NumericLiteral", "node.val is", node.value);
+  NumericLiteral(path) {
+    console.log("this is NumericLiteral", "path is", path);
+  },
+  VariableDeclaration(path) {
+    console.log("this is VariableDeclaration", path);
   },
 });
