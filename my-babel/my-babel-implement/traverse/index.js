@@ -1,7 +1,15 @@
 const { visitorKeys } = require("../types/index");
 const NodePath = require("./path/NodePath");
 
-function traverse(astNode, vistors, parent, parentPath, key, listKey) {
+module.exports = function traverse(
+  astNode,
+  vistors,
+  parent,
+  parentPath,
+  key,
+  listKey
+) {
+  if (astNode == undefined || astNode == null) return;
   const type = astNode.type;
   const definations = visitorKeys.get(type);
   let vistor = vistors[type];
@@ -34,8 +42,4 @@ function traverse(astNode, vistors, parent, parentPath, key, listKey) {
   }
 
   vistor && vistor.exit && vistor.exit(astNode);
-}
-
-module.exports = {
-  traverse,
 };

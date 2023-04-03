@@ -1,6 +1,7 @@
-const { traverse } = require("../index");
 const validations = require("../../types/index");
 const { visitorKeys } = require("../../types/index");
+const { Scope } = require("./Scope");
+
 module.exports = class NodePath {
   constructor(
     node = null,
@@ -56,8 +57,9 @@ module.exports = class NodePath {
   }
 
   traverse(visitor) {
+    const traverse = require("../index");
     const type = this.node.type;
-    const defination = visitorKeys[type];
+    const defination = visitorKeys.get(type);
 
     (defination.visitor || []).forEach((key) => {
       const prop = this.node[key];
@@ -77,5 +79,21 @@ module.exports = class NodePath {
 
   toString() {
     return generator(this.node).code;
+  }
+
+  isBlock() {
+    return visitorKeys.get(this.node.type)?.isBlock || false;
+  }
+
+  get scope() {
+    if (this.__scope) {
+      return this.__scope;
+    }
+
+    const isBlock = this.isBlock();
+    const parentScope = this.parentPath && this.parentPath.scope;
+    return (this.__scope = isBlock
+      ? new Scope(parentScope, this)
+      : parentScope);
   }
 };
