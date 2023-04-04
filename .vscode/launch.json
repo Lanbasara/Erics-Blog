@@ -1,17 +1,23 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Current-file",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${file}"
-        }
-    ]
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Current-file",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${file}"
+    },
+    {
+      "name": "测试 babel cli",
+      "program": "${workspaceFolder}/my-babel/my-babel-implement/cli/index.js", //运行的代码
+      "request": "launch",
+      "type": "node",
+      "args": ["./input/*.js", "--out-dir", "./cli-dist", "--watch"], //命令行参数
+      "cwd": "${workspaceFolder}/my-babel/test" //运行的目录
+    }
+  ]
 }
